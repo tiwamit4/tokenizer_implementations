@@ -1,0 +1,126 @@
+Training: find frequent pairs → merge them → remember merge order
+Encoding: start with characters → replay learned merges
+
+
+BPE TOKENIZER — IMPLEMENTATION FLOW
+
+START
+  |
+  v
+Input training corpus
+Example: ["low lower", "low lowest"]
+  |
+  v
+Split each sentence into words
+  |
+  v
+Represent every word as characters + end marker
+
+"low"  →  l  o  w  </w>
+"lower" → l  o  w  e  r  </w>
+  |
+  v
+Count identical words
+  |
+  v
+Create vocabulary
+
+(l, o, w, </w>)          : frequency
+(l, o, w, e, r, </w>)    : frequency
+  |
+  v
+──────────────── TRAINING LOOP ────────────────
+  |
+  v
+Count all adjacent symbol pairs
+
+For: l o w </w>
+
+(l, o)
+(o, w)
+(w, </w>)
+  |
+  v
+Find the pair with the highest total frequency
+  |
+  v
+Example best pair: (l, o)
+  |
+  v
+Merge it everywhere in the vocabulary
+
+l o w </w>  →  lo w </w>
+  |
+  v
+Save the merge rule
+
+merges = [
+  ("l", "o")
+]
+  |
+  v
+Have you reached the chosen number of merges?
+  |
+  ├── No ──> Count pairs again
+  |
+  └── Yes
+        |
+        v
+Trained BPE model
+
+Model contains:
+  - ordered merge rules
+  - vocabulary / tokens
+  |
+  v
+──────────────── ENCODING NEW TEXT ────────────────
+  |
+  v
+Input word
+Example: "lower"
+  |
+  v
+Split into characters + end marker
+
+l  o  w  e  r  </w>
+  |
+  v
+Apply learned merge rules in training order
+
+(l, o)  →  lo
+
+Result:
+lo  w  e  r  </w>
+  |
+  v
+Return BPE tokens
+  |
+  v
+END
+
+---------------------------------
+### For Large dataset
+
+Large dataset
+    ↓
+Read in batches/chunks
+    ↓
+Clean and normalize text
+    ↓
+Pre-tokenize text into words
+    ↓
+Build word-frequency counts
+    ↓
+Initialize byte/character vocabulary
+    ↓
+Count adjacent token pairs
+    ↓
+Merge the most frequent pair
+    ↓
+Update only affected pair counts
+    ↓
+Repeat until vocabulary-size target
+    ↓
+Save vocabulary + merges + configuration
+    ↓
+Evaluate on validation data

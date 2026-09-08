@@ -1,0 +1,3 @@
+# Install dependencies maintained by each tokenizer implementation.
+-r BPE/requirements.txt
+-r SentencePiece/requirements.txt

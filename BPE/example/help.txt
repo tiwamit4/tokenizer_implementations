@@ -1,0 +1,44 @@
+Logic BPE:
+    Split training text into initail symbols.
+    Count all adjecent symbol pairs.
+    Find the most frequent pair.
+    Merge the pair into a new token.
+    Add the new token to the Vocabulary.
+    Repeat until the desired vocab size is reached.
+
+Code : 
+    while vocab_size < target_vocab_size:
+        pair_counts = count_adjecent_pairs(corpus)
+        best_pair = most_frequent(pair_counts)
+        corpus = merge(best_pair,corpus)
+        vocab.add(best_pair)
+
+Flow : 
+    Raw Text -> Normalization -> Pre-tokenization -> BPE -> Tokens -> Token IDs -> Embedding Layer -> Transfromer
+
+
+## for large dataset
+
+Large dataset
+    ↓
+Read in batches/chunks
+    ↓
+Clean and normalize text
+    ↓
+Pre-tokenize text into words
+    ↓
+Build word-frequency counts
+    ↓
+Initialize byte/character vocabulary
+    ↓
+Count adjacent token pairs
+    ↓
+Merge the most frequent pair
+    ↓
+Update only affected pair counts
+    ↓
+Repeat until vocabulary-size target
+    ↓
+Save vocabulary + merges + configuration
+    ↓
+Evaluate on validation data

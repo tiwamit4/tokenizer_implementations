@@ -1,0 +1,56 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache and build files
+__pycache__/
+*.py[cod]
+*.pyd
+*.egg-info/
+build/
+dist/
+
+# Test and tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Downloaded shared datasets (retain the empty directory placeholder)
+datasets/*
+!datasets/.gitkeep
+
+# Dataset folders kept inside individual tokenizer projects
+**/dataset/*
+!**/dataset/.gitkeep
+
+# Generated tokenizer models and training outputs
+**/*_model.json
+**/models/
+**/outputs/
+*.model
+*.vocab
+*.safetensors
+*.pt
+*.pth
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
