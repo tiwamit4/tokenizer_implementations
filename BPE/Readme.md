@@ -26,6 +26,47 @@ Evaluate on validation data
 
 # BPE tokenizer implementation
 
+## Large-dataset training
+
+The original `training.py` remains the simple learning implementation.
+`optimized_training.py` uses incremental pair counts, affected-word indexes,
+and a priority queue instead of scanning every word after every merge.
+`data.py` reads local Parquet in batches, or streams CSV, JSONL, and text files.
+Unique words and pair indexes still live in RAM; this is not out-of-core training.
+
+Install dependencies from the project root:
+
+```powershell
+python -m pip install -r BPE/requirements.txt
+```
+
+Start with the default 10,000 nonempty training rows and 100 merges:
+
+```powershell
+python -m BPE.code.main
+```
+
+Or run directly from `BPE/code` without arguments:
+
+```powershell
+python main.py
+```
+
+Change `DEFAULT_MAX_TEXTS` and `DEFAULT_NUM_MERGES` in `code/config.py`
+to control the sample size and merge count.
+
+All training settings are declared in `code/config.py`; there is no argument
+parser. For a larger experiment, change `DEFAULT_MAX_TEXTS`,
+`DEFAULT_NUM_MERGES`, and `DEFAULT_MODEL_PATH` there, then run `python main.py`.
+
+Set `USE_ALL_TEXTS = True` only when ready to process the entire training corpus.
+The default pattern selects `train*.parquet`, never validation or test files.
+Use `DEFAULT_TRAINING_DIR` for another file or folder and
+`DEFAULT_TRAINING_PATTERN` for folder matching. Existing models are not
+overwritten; change `DEFAULT_MODEL_PATH` for a new run. Training does not download
+data.
+
+
 This folder contains a character-level Byte Pair Encoding tokenizer written
 from scratch. The existing large-dataset flow above describes how the project
 can later be scaled with batch processing and incremental pair-count updates.
