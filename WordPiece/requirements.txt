@@ -1,0 +1,2 @@
+# Optional: needed only when USE_DATASET=True for local Parquet input.
+pyarrow
