@@ -3,3 +3,4 @@
 -r SentencePiece/requirements.txt
 -r WordPiece/requirements.txt
 -r ByteLevelBPE/requirements.txt
+-r Unigram/requirements.txt
